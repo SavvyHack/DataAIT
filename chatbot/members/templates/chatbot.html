@@ -5,7 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Chatbot</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        #submit, #gemini {
+            background-color: transparent;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 10px;
+            transition: background-color 0.3s, color 0.3s, border 0.3s;
+            color: #2594dd;
+            border: 1px solid #2594dd;
+            cursor: pointer;
+        }
+
+        #submit:hover, #gemini:hover {
+            background-color: #2594dd;
+            color: white;
+            border: 1px solid transparent;
+        }
+    </style>
 </head>
 <body>
     <div id="root">
@@ -15,6 +33,48 @@
         <input type="submit" id='gemini' value="gemini" onclick="askgemini()"><br>
         <p id="response"></p>
     </div>
-    <script src="main.js"></script>
+    <script>
+        function submit() {
+            let user_query = document.getElementById('query').value;
+            fetch(`/query?query=${encodeURIComponent(user_query)}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById('response').innerHTML = data || 'No response from server';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('response').innerHTML = 'Error occurred while sending the request.';
+                });
+                console.log("TEST")
+        }
+
+        function askgemini() {
+            let user_query = document.getElementById('query').value;
+            fetch('/get_key')
+                .then(response => response.json())
+                .then(data => {
+                    const apiKey = data;
+                    fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "contents": [{
+                                "parts": [{
+                                    "text": user_query 
+                                }]
+                            }]
+                        })
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+
+                        document.getElementById('response').innerText = data.candidates[0]?.content?.parts[0]?.text || 'No content available';
+                    })
+                })
+
+        }
+    </script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from django.conf import settings
 from django.http import JsonResponse
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from members.models import keys
+import requests
 
 tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
 model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
@@ -21,6 +24,7 @@ def chat(input_text):
     return bot_response
 
 def chatbot_query(request):
+    key = keys.objects.get(key='gemini')
     query = request.GET['query']
     res = chat(query)
     return JsonResponse(res, safe=False)
@@ -29,3 +33,6 @@ def chatbot(request):
     return render(request, 'chatbot.html')
     # Create your views here.
 
+def get_key(request): 
+    key = keys.objects.get(key='gemini')
+    return JsonResponse(key.value, safe=False)
