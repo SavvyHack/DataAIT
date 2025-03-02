@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Chatbot</title>
     <style>
-        #submit, #gemini {
+        #submit {
             background-color: transparent;
             padding: 10px 20px;
             border-radius: 10px;
@@ -18,7 +18,7 @@
             cursor: pointer;
         }
 
-        #submit:hover, #gemini:hover {
+        #submit:hover{
             background-color: #2594dd;
             color: white;
             border: 1px solid transparent;
@@ -30,7 +30,6 @@
         <label for="query">Enter query:</label><br>
         <textarea style="width:800px; height:200px; vertical-align: top;" id="query" name="query"></textarea><br>
         <input type="submit" id='submit' value="submit" onclick="submit()"><br>
-        <input type="submit" id='gemini' value="gemini" onclick="askgemini()"><br>
         <p id="response"></p>
     </div>
     <script>
@@ -46,34 +45,6 @@
                     document.getElementById('response').innerHTML = 'Error occurred while sending the request.';
                 });
                 console.log("TEST")
-        }
-
-        function askgemini() {
-            let user_query = document.getElementById('query').value;
-            fetch('/get_key')
-                .then(response => response.json())
-                .then(data => {
-                    const apiKey = data;
-                    fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            "contents": [{
-                                "parts": [{
-                                    "text": user_query 
-                                }]
-                            }]
-                        })
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-
-                        document.getElementById('response').innerText = data.candidates[0]?.content?.parts[0]?.text || 'No content available';
-                    })
-                })
-
         }
     </script>
 </body>
