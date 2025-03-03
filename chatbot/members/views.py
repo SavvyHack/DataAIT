@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.conf import settings
 from django.http import JsonResponse
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import json
+import os
 
 tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
 model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
@@ -25,9 +27,16 @@ def chat(request):
     # Return the response as JSON
     return JsonResponse({"response": bot_response})
 
-
+def get_api_key(request):
+    try:
+        # Load the api_key.json file
+        with open(os.path.join(settings.BASE_DIR, 'secrets', 'api_key.json'), 'r') as f:
+            data = json.load(f)
+            api_key = data.get('api_key')
+            return JsonResponse({'apiKey': api_key})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 def chatbot(request):
     return render(request, 'chatbot.html')
     # Create your views here.
-

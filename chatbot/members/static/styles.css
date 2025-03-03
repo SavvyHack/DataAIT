@@ -1,4 +1,4 @@
-#submit {
+#submit, #gemini {
     background-color: transparent;
     padding: 10px 20px;
     border-radius: 10px;
@@ -10,7 +10,7 @@
     cursor: pointer;
 }
 
-#submit:hover {
+#submit:hover, #gemini:hover {
     background-color: #2594dd;
     color: white;
     border: 1px solid transparent;
