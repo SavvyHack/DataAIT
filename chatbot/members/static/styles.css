@@ -1,0 +1,24 @@
+#submit, #gemini {
+    background-color: transparent;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s, color 0.3s, border 0.3s;
+    color: #2594dd;
+    border: 1px solid #2594dd;
+    cursor: pointer;
+}
+
+#submit:hover, #gemini:hover {
+    background-color: #2594dd;
+    color: white;
+    border: 1px solid transparent;
+}
+
+#response {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
