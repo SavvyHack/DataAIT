@@ -13,7 +13,7 @@ function submit() {
                 document.getElementById('response').innerHTML = `Error: ${data.error}`;
             } else {
                 // Access the 'response' field in the data and display it
-                document.getElementById('response').innerHTML = `DialoGPT: ${data.response}`;
+                document.getElementById('response').innerHTML = `<strong>DialoGPT:</strong> ${data.response}`;
             }
         })
         .catch(error => {
@@ -48,19 +48,23 @@ function askgemini() {
                 })
                 .then((response) => response.json())
                 .then((data) => {
-                    document.getElementById('response').innerText = data.candidates[0]?.content?.parts[0]?.text || 'No content available';
+                    // Extract Gemini response
+                    let geminiResponse = data.candidates[0]?.content?.parts[0]?.text || 'No content available';
+
+                    // Set the response text with "Gemini: " prefix
+                    document.getElementById('response').innerHTML = "<strong>Gemini:</strong> " + geminiResponse;
                 })
                 .catch(error => {
                     console.error('Error calling Gemini API:', error);
-                    document.getElementById('response').innerText = 'Error calling the Gemini API';
+                    document.getElementById('response').innerHTML = "<strong>Gemini:</strong> Error calling the Gemini API";
                 });
             } else {
                 console.error('API key not found');
-                document.getElementById('response').innerText = 'API key not found';
+                document.getElementById('response').innerHTML = "<strong>Gemini:</strong> API key not found";
             }
         })
         .catch(error => {
             console.error('Error fetching the API key:', error);
-            document.getElementById('response').innerText = 'Error fetching API key';
+            document.getElementById('response').innerHTML = "<strong>Gemini:</strong> Error fetching API key";
         });
 }

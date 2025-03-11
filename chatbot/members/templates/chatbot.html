@@ -12,8 +12,9 @@
     <div id="root">
         <label for="query">Enter query:</label><br>
         <textarea style="width:800px; height:200px; vertical-align: top;" id="query" name="query"></textarea><br>
-        <input type="submit" id='submit' value="Submit" onclick="submit()"><br>
-        <input type="submit" id='gemini' value="gemini" onclick="askgemini()"><br>
+        <input type="submit" id='submit' value="DialoGPT" onclick="submit()"><br>
+        <input type="submit" id='gemini' value="Gemini" onclick="askgemini()"><br>
+        <h3>Response:</h3>
         <p id="response"></p>
     </div>
     <script src="{% static 'main.js' %}"></script>
